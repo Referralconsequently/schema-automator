@@ -1,7 +1,7 @@
 # set base image (host OS)
 FROM python:3.9
 
-# https://stackoverflow.com/questions/53835198/integrating-python-poetry-with-docker
+# Environment setup
 ENV YOUR_ENV=${YOUR_ENV} \
   PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
@@ -11,19 +11,19 @@ ENV YOUR_ENV=${YOUR_ENV} \
   PIP_DEFAULT_TIMEOUT=100 \
   POETRY_VERSION=1.1.13
 
-# System deps:
+# System deps
 RUN pip install "poetry==$POETRY_VERSION"
 
-# set the working directory in the container
+# Set working directory
 WORKDIR /work
 
-RUN pip install schema-automator
+# Install schema-automator + API server
+RUN pip install schema-automator fastapi uvicorn
 
-#COPY poetry.lock pyproject.toml /code/
+# Copy your API wrapper
+COPY main.py .
 
-# Project initialization:
-#RUN poetry install
-
-
-# command to run on container start
-CMD [ "bash" ]
+# Replace this line:
+# CMD [ "bash" ]
+# With the command to launch FastAPI
+CMD ["uvicorn", "main:app", "--host=0.0.0.0", "--port=8080"]
