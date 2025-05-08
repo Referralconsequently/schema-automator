@@ -17,8 +17,8 @@ RUN pip install "poetry==$POETRY_VERSION"
 # Set working directory
 WORKDIR /work
 
-# Install schema-automator + API server
-RUN pip install schema-automator fastapi uvicorn
+# Install schema-automator + FastAPI + multipart form support
+RUN pip install schema-automator fastapi uvicorn python-multipart
 
 # Copy your API wrapper
 COPY main.py .
